@@ -15,4 +15,16 @@
 		<nature>com.adobe.flexbuilder.project.aslibnature</nature>
 		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] DragonBonesAS-src</name>
+			<type>2</type>
+			<location>D:/github/DragonBonesAS/src</location>
+		</link>
+		<link>
+			<name>[source path] starling-src</name>
+			<type>2</type>
+			<location>D:/github/Starling-Framework/starling/src</location>
+		</link>
+	</linkedResources>
 </projectDescription>
