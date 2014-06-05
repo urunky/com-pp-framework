@@ -1,18 +1,13 @@
 package com.pp.starling.helper
 {
-	import com.greensock.events.LoaderEvent;
-	import com.greensock.loading.BinaryDataLoader;
-	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.LoaderMax;
 	
 	import flash.system.Capabilities;
-	import flash.utils.ByteArray;
 	
 	import dragonBones.factorys.StarlingFactory;
 	import dragonBones.objects.XMLDataParser;
 	import dragonBones.textures.StarlingTextureAtlas;
 	
-	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
 	public class DragonBonesHelper
@@ -26,7 +21,7 @@ package com.pp.starling.helper
 		
 		private var _assetManager:AssetManager ;
 		
-		public function DragonBonesHelper(  scaleFactor:Number = 1 )
+		public function DragonBonesHelper( scaleFactor:Number = 1 )
 		{
 			_scaleFactor = scaleFactor ;
 			_factory = new StarlingFactory ;
@@ -34,7 +29,7 @@ package com.pp.starling.helper
 			_factory.optimizeForRenderToTexture = true ;
 		}
 		
-		public function loadFromAssetManager( fileNames:Array, compFunc:Function ):void
+		public function load( compFunc:Function, fileNames:Array ):void
 		{
 			_assetManager = new AssetManager ;
 			_assetManager.keepAtlasXmls = true ;
@@ -44,9 +39,9 @@ package com.pp.starling.helper
 			{
 				if ( ratio >= 1 )
 				{
-					factory.addSkeletonData( XMLDataParser.parseSkeletonData( _assetManager.getXml("skeleton") ),"nextoryTitle" ) ;
+					factory.addSkeletonData( XMLDataParser.parseSkeletonData( _assetManager.getXml("skeleton") ) ) ;
 					var sta:StarlingTextureAtlas = new StarlingTextureAtlas( _assetManager.getTexture("texture"), _assetManager.getXml("texture") )  ;
-					factory.addTextureAtlas( sta, "nextoryTitle" ) ;
+					factory.addTextureAtlas( sta ) ;
 					if ( compFunc ) compFunc() ;
 				}
 			}

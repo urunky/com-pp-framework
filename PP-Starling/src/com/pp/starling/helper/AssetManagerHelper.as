@@ -18,7 +18,7 @@ package com.pp.starling.helper
 			_assetManager.verbose = true ;
 		}
 		
-		public function loadAssets( fileNames:Array, compFunc:Function  ):void
+		public function load( compFunc:Function, fileNames:Array  ):void
 		{
 			_assetManager.enqueue( fileNames ) ;
 			var onLoadComp:Function = function( ratio:Number ):void

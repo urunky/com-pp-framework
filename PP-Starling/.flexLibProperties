@@ -3,6 +3,7 @@
   <includeClasses>
     <classEntry path="com.pp.starling.helper.GraphicHelper"/>
     <classEntry path="com.pp.starling.helper.BinaryLoader"/>
+    <classEntry path="com.pp.starling.ui.Gage"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
