@@ -20,6 +20,8 @@ package com.pp.starling.helper
 		
 		public function load( compFunc:Function, fileNames:Array  ):void
 		{
+			
+			// trace
 			_assetManager.enqueue( fileNames ) ;
 			var onLoadComp:Function = function( ratio:Number ):void
 			{
