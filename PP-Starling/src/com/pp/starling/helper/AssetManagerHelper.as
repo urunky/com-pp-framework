@@ -12,16 +12,15 @@ package com.pp.starling.helper
 		private var _assetManager:AssetManager = null ;
 		public function get assetManager():AssetManager					{	return _assetManager;	}
 		
-		public function AssetManagerHelper()
+		public function AssetManagerHelper( verbose:Boolean = false )
 		{
 			_assetManager = new AssetManager ;
-			_assetManager.verbose = true ;
+			_assetManager.verbose = verbose ;
 		}
 		
 		public function load( compFunc:Function, fileNames:Array  ):void
 		{
 			
-			// trace
 			_assetManager.enqueue( fileNames ) ;
 			var onLoadComp:Function = function( ratio:Number ):void
 			{

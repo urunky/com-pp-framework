@@ -21,9 +21,11 @@ package com.pp.starling.helper
 		
 		private var _assetManager:AssetManager ;
 		
-		public function DragonBonesHelper( scaleFactor:Number = 1 )
+		private var _verbose:Boolean ;
+		
+		public function DragonBonesHelper( verbose:Boolean = false )
 		{
-			_scaleFactor = scaleFactor ;
+			_verbose = verbose ;
 			_factory = new StarlingFactory ;
 			_factory.generateMipMaps = false ;
 			_factory.optimizeForRenderToTexture = true ;
@@ -33,7 +35,7 @@ package com.pp.starling.helper
 		{
 			_assetManager = new AssetManager ;
 			_assetManager.keepAtlasXmls = true ;
-			_assetManager.verbose = true ;
+			_assetManager.verbose = _verbose ;
 			_assetManager.enqueue( fileNames ) ;
 			var onProgress:Function = function( ratio:Number ):void
 			{

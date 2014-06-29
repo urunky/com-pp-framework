@@ -22,8 +22,10 @@ package com.pp.starling.ui
 		private var _currentValue:Number
 		public function get currentValue():Number					{	return _currentValue;	}
 		
-		private var _tweenDuration:Number ;
-		
+		private var _tweenDuration:Number 
+		public function get tweenDuration():Number						{	return _tweenDuration;	}
+		public function set tweenDuration(value:Number):void						{	_tweenDuration = value;	}
+
 		public function Gage( w:int, h:int, tweenDuration:Number = 0.2 )
 		{
 			super();
@@ -34,7 +36,7 @@ package com.pp.starling.ui
 			showingValue = 0 ;
 		}
 		
-		public function reset( currentValue:Number, useTween:Boolean = true ):void
+		public function reset( currentValue:Number = 0, useTween:Boolean = true ):void
 		{
 			_currentValue = currentValue ;
 			tween( useTween ) ;
