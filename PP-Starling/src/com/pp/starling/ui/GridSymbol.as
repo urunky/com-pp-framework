@@ -5,7 +5,7 @@ package com.pp.starling.ui
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	
-	public class GridViewSymbol extends DisplayObjectContainer
+	public class GridSymbol extends DisplayObjectContainer
 	{
 		private var _px:int ;
 		public function get px():int							{	return _px;	}
@@ -38,7 +38,7 @@ package com.pp.starling.ui
 			_py = value ;
 		}
 		
-		public function GridViewSymbol( newWidth:int, newHeight:int )
+		public function GridSymbol( newWidth:int, newHeight:int )
 		{
 			_pw = newWidth ;
 			_ph = newHeight ;

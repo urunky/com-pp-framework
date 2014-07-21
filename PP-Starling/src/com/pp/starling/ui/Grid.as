@@ -3,7 +3,7 @@ package com.pp.starling.ui
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	
-	public class GridView extends DisplayObjectContainer
+	public class Grid extends DisplayObjectContainer
 	{
 		public static const HORIZONTAL:int = 1 ;
 		public static const VERTICAL:int = 2 ;
@@ -45,7 +45,7 @@ package com.pp.starling.ui
 		private var _paddingBottom:int 
 		public function get paddingBottom():int						{	return _paddingBottom;	}
 
-		public function GridView( direction:int, symbolNumInLine:int, hGap:int = 0, vGap:int = 0, paddingTop:int = 0, paddingBottom:int = 0, paddingLeft:int = 0, paddingRight:int = 0 )
+		public function Grid( direction:int, symbolNumInLine:int, hGap:int = 0, vGap:int = 0, paddingTop:int = 0, paddingBottom:int = 0, paddingLeft:int = 0, paddingRight:int = 0 )
 		{
 			super() ;
 			_direction = direction ;
@@ -60,12 +60,12 @@ package com.pp.starling.ui
 			_ph = 0 ;
 		}
 		
-		public function addSymbol( symbol:GridViewSymbol ):void
+		public function addSymbol( symbol:GridSymbol ):void
 		{
 			var idx:int = numChildren ;
 			var px:int ;
 			var py:int ;
-			if ( _direction == GridView.HORIZONTAL )
+			if ( _direction == Grid.HORIZONTAL )
 			{
 				px = _paddingLeft + int( idx / _symbolNumInLine ) * ( symbol.pw + _hGap )  ;
 				py = _paddingTop + ( idx % _symbolNumInLine ) * ( symbol.ph + _vGap )  ;
@@ -88,20 +88,20 @@ package com.pp.starling.ui
 		{
 			var i:int ;
 			var len:int = numChildren ;
-			var symbol:GridViewSymbol ;
+			var symbol:GridSymbol ;
 			var arr:Array = [] ;
 			while ( numChildren > 0 ) arr.push( removeChildAt(0) ) ;
 			for ( i = 0; i < len; i++)  addSymbol( arr[i] ) ;
 		}
 		
-		public function findSymbolByID( id:int ):GridViewSymbol
+		public function findSymbolByID( id:int ):GridSymbol
 		{
 			var i:int ;
-			var symbol:GridViewSymbol ;
+			var symbol:GridSymbol ;
 			var len:int = numChildren ;
 			for ( i = 0; i < len; i++) 
 			{
-				symbol = getChildAt( i ) as GridViewSymbol ;
+				symbol = getChildAt( i ) as GridSymbol ;
 				if ( symbol.hasOwnProperty("id") ) 
 				{
 					if ( symbol["id"] == id ) return symbol ;
