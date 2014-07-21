@@ -2,12 +2,10 @@ package com.pp.starling.ui
 {
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
+	import starling.utils.HAlign;
 	
 	public class Grid extends DisplayObjectContainer
 	{
-		public static const HORIZONTAL:int = 1 ;
-		public static const VERTICAL:int = 2 ;
-		
 		private function get lineCnt():int							
 		{
 			if ( numChildren == 0 ) return 1 ;
@@ -28,8 +26,8 @@ package com.pp.starling.ui
 		private var _hGap:int ;
 		private var _vGap:int ;
 		
-		private var _direction:int 
-		public function get direction():int						{	return _direction;	}
+		private var _direction:String 
+		public function get direction():String						{	return _direction;	}
 
 		private var _symbolNumInLine:int ;
 		
@@ -45,7 +43,7 @@ package com.pp.starling.ui
 		private var _paddingBottom:int 
 		public function get paddingBottom():int						{	return _paddingBottom;	}
 
-		public function Grid( direction:int, symbolNumInLine:int, hGap:int = 0, vGap:int = 0, paddingTop:int = 0, paddingBottom:int = 0, paddingLeft:int = 0, paddingRight:int = 0 )
+		public function Grid( direction:String, symbolNumInLine:int, hGap:int = 0, vGap:int = 0, paddingTop:int = 0, paddingBottom:int = 0, paddingLeft:int = 0, paddingRight:int = 0 )
 		{
 			super() ;
 			_direction = direction ;
@@ -65,7 +63,7 @@ package com.pp.starling.ui
 			var idx:int = numChildren ;
 			var px:int ;
 			var py:int ;
-			if ( _direction == Grid.HORIZONTAL )
+			if ( _direction == HAlign.LEFT )
 			{
 				px = _paddingLeft + int( idx / _symbolNumInLine ) * ( symbol.pw + _hGap )  ;
 				py = _paddingTop + ( idx % _symbolNumInLine ) * ( symbol.ph + _vGap )  ;
@@ -102,10 +100,7 @@ package com.pp.starling.ui
 			for ( i = 0; i < len; i++) 
 			{
 				symbol = getChildAt( i ) as GridSymbol ;
-				if ( symbol.hasOwnProperty("id") ) 
-				{
-					if ( symbol["id"] == id ) return symbol ;
-				}
+				if ( symbol.id == id ) return symbol ;
 			}
 			return null ;
 		}

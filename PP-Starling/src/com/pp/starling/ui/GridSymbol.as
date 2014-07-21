@@ -1,21 +1,17 @@
 package com.pp.starling.ui
 {
-	
 	import starling.display.DisplayObjectContainer;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
+	import starling.events.Event;
 	
 	public class GridSymbol extends DisplayObjectContainer
 	{
 		private var _px:int ;
-		public function get px():int							{	return _px;	}
-		public function set px(value:int):void					{	_px = value;	}
+		public function get px():int						{	return _px;	}
 
 		private var _py:int ;
-		public function get py():int							{	return _py;	}
-		public function set py(value:int):void					{	_py = value;	}
+		public function get py():int						{	return _py;	}
 		
-		public function get idx():int							{	return parent.getChildIndex( this ) ;	}
+		public function get idx():int						{	return parent.getChildIndex( this ) ;	}
 		
 		private var _pw:int 
 		public function get pw():int						{	return _pw;	}
@@ -38,38 +34,33 @@ package com.pp.starling.ui
 			_py = value ;
 		}
 		
-		public function GridSymbol( newWidth:int, newHeight:int )
+		public function GridSymbol( pw:int, ph:int )
 		{
-			_pw = newWidth ;
-			_ph = newHeight ;
+			_pw = pw ;
+			_ph = ph ;
 			_id = 0 ;
+			addEventListener( Event.ADDED_TO_STAGE, onAddedToStage ) ;
 		}
 		
-		public function activate():void
+		private function onAddedToStage( e:Event ):void
 		{
-			addEventListener( TouchEvent.TOUCH, onTouch ) ;
+			removeEventListener( Event.ADDED_TO_STAGE, onAddedToStage ) ;
+			addEventListener( Event.REMOVED_FROM_STAGE, onRemovedToStage ) ;
+			addedToStage() ;
 		}
 		
-		public function deactivate():void
+		private function onRemovedToStage( e:Event ):void
 		{
-			removeEventListeners( TouchEvent.TOUCH ) ;
+			removedFromStage() ;
+			addEventListener( Event.ADDED_TO_STAGE, onAddedToStage ) ;
 		}
 		
-		private function onTouch( e:TouchEvent ):void
-		{
-			if ( e.getTouch( this, TouchPhase.BEGAN ) ) showTouchBegan() ;
-			if ( e.getTouch( this, TouchPhase.ENDED ) ) showTouchEnded() ;
-		}
-	
-		protected function showTouchBegan():void
-		{
-			
-		}
-		
-		protected function showTouchEnded():void
+		protected function addedToStage():void
 		{
 		}
 		
-		
+		protected function removedFromStage():void
+		{
+		}
 	}
 }
