@@ -60,7 +60,6 @@ package com.pp.parse
 		public function get onFailFunc():Function							{	return _onFailFunc;	}
 		public function set onFailFunc(value:Function):void					{	_onFailFunc = value;	}
 
-		private var _timer:Timer ;
 		private var _delayedLogs:Array ;
 		
 		public function ParseManager( appID:String, apiKey:String, sessionToken:String = "")
@@ -68,44 +67,10 @@ package com.pp.parse
 			_appID = appID ;
 			_apiKey = apiKey ;
 			_sessionToken = sessionToken ;
-			_timer = new Timer( 500, 1 ) ;
-			_timer.addEventListener( TimerEvent.TIMER_COMPLETE, onTimerComp ) ;
 			_delayedLogs =[] ;
 		}	
 		
-		private function onTimerComp( e:TimerEvent ):void
-		{
-			_timer.stop() ;
-			queueLogs( null, _delayedLogs, false ) ;
-		}
-		
-		public function queueLogs( compFunc:Function, logs:Array, delayed:Boolean = true ):void
-		{
-			if ( delayed )
-			{
-				_timer.reset() ;
-				_timer.start() ;
-				var log:IParseLog ;
-				while ( logs.length > 0 )
-				{
-					log = logs.shift() ;
-					if ( logs.indexOf( log ) < 0 ) logs.push( log ) ;
-				}
-			}
-			else
-			{
-				applyLogs( compFunc, logs ) ;
-			}
-			/*if ( compFunc != null )
-			{
-				queueLoggables( compFunc, logs ) ;
-			}
-			else
-			{
-				
-			}*/
-		}
-		
+	
 		private function makeParseCall():ParseCall
 		{
 			var parseCall:ParseCall = ParseCall.create( _appID, _apiKey, _sessionToken ) ;
@@ -138,7 +103,7 @@ package com.pp.parse
 			parseCall.call( onComp, url, method, params, where ) ;
 		}
 		
-		public function applyLogs( compFunc:Function, logs:Array ):void
+		public function batchLogs( compFunc:Function, logs:Array ):void
 		{
 			var requests:Array = [] ;
 			while ( logs.length > 0 ) requests.push( logToBatchObj( logs.shift() ) ) ;
@@ -167,8 +132,6 @@ package com.pp.parse
 			}
 			batch( onComp, requests ) ;
 		}
-		
-		
 		
 		public function find( compFunc:Function, className:String, id:String = "", params:Object = null, where:Object = null ):void
 		{
