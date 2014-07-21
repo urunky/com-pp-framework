@@ -2,6 +2,8 @@
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="com.pp.core.helper.NumericConverter"/>
+    <classEntry path="com.pp.core.helper.ObjectPool"/>
+    <classEntry path="com.pp.core.helper.IPoolable"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
