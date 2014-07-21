@@ -31,7 +31,7 @@ package com.pp.starling.helper
 			_factory.optimizeForRenderToTexture = true ;
 		}
 		
-		public function load( compFunc:Function, fileNames:Array ):void
+		public function load( progressFunc:Function, fileNames:Array ):void
 		{
 			_assetManager = new AssetManager ;
 			_assetManager.keepAtlasXmls = true ;
@@ -44,8 +44,8 @@ package com.pp.starling.helper
 					factory.addSkeletonData( XMLDataParser.parseSkeletonData( _assetManager.getXml("skeleton") ) ) ;
 					var sta:StarlingTextureAtlas = new StarlingTextureAtlas( _assetManager.getTexture("texture"), _assetManager.getXml("texture") )  ;
 					factory.addTextureAtlas( sta ) ;
-					if ( compFunc ) compFunc() ;
 				}
+				progressFunc( ratio ) ;
 			}
 			_assetManager.loadQueue( onProgress ) ;
 		}
