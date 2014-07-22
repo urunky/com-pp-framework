@@ -1,12 +1,11 @@
 package com.pp.starling.helper
 {
-	import flash.geom.Point;
 	import flash.system.Capabilities;
 	
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
-	public class StarlingHelper
+	public class StarlingAssetHelper
 	{
 		private var _scaleFactor:Number ;
 		
@@ -15,7 +14,7 @@ package com.pp.starling.helper
 		
 		private var _names:Array ;
 		
-		public function StarlingHelper( verbose:Boolean = false )
+		public function StarlingAssetHelper( verbose:Boolean = false )
 		{
 			_assetManager = new AssetManager ;
 			_assetManager.verbose = verbose ;

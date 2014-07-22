@@ -27,22 +27,19 @@ package com.pp.starling.ui
 		
 		private function get contentWidth():int 				
 		{	
-			var w:int = _grid.width  ;
-			return w > _viewPort.width ? w : _viewPort.width  ;	
+			var w:int = _grid.pw  ;
+			return w > _viewport.width ? w : _viewport.width  ;	
 		}
 		private function get contentHeight():int 			
 		{	
-			var h:int = _grid.height ;
-			return h > _viewPort.height ? h : _viewPort.height ;	
+			var h:int = _grid.ph ;
+			return h > _viewport.height ? h : _viewport.height ;	
 		}
 		
 		private var _transBack:Quad = null ;
 		
 		private var _goToSymbol:DisplayObject ;
 		
-		private var _viewPort:Rectangle 
-		public function get viewPort():Rectangle						{	return _viewPort;	}
-
 		private var _touches:Vector.<Touch> ;
 		private var _touch:Touch ;
 		private var _globalTouchPoint:Point ;
@@ -51,24 +48,18 @@ package com.pp.starling.ui
 		
 		private var _enableScroll:Boolean ;
 		public function get enableScroll():Boolean						{	return _enableScroll;	}
-		public function set enableScroll(value:Boolean):void						{	_enableScroll = value;	}
+		public function set enableScroll(value:Boolean):void			{	_enableScroll = value;	}
 
-		private var _pw:int 
-		public function get pw():int						{	return _pw;	}
-
-		private var _ph:int 
-		public function get ph():int						{	return _ph;	}
+		private var _viewport:Rectangle ;
 		
 		public function get symbolNum():int					{	return _grid.numChildren ;	}
 		
-		public function Scroller( pw:int, ph:int, direction:String, symbolNumInLine:int, hGap:int, vGap:int, paddingLeft:int = 0, paddingTop:int = 0, paddingRight:int = 0, paddingBottom:int = 0 )
+		public function Scroller( viewport:Rectangle, direction:String, symbolWidth:int, symbolHeight:int, symbolNumInDirection:int, hGap:int = 0 , vGap:int = 0, padding:Rectangle = null )
 		{
-			_pw = pw ;
-			_ph = ph ;
-			_viewPort = new Rectangle( 0, 0, _pw, _ph )  ; //new Rectangle( 0, 0, viewPortWidth, viewPortWidth ) ;
-			clipRect = _viewPort ;
+			_viewport = viewport ;
+			trace("_viewport", _viewport) ;
+			_grid = new Grid( direction, symbolWidth, symbolHeight, symbolNumInDirection, hGap, vGap, padding )  ;
 			
-			_grid = new Grid( direction, symbolNumInLine,  hGap, vGap, paddingTop, paddingBottom, paddingLeft, paddingRight )  ;
 			_globalMovement = new Point ;
 			_globalTouchPoint = new Point ;
 			_localTouchPoint = new Point ;
@@ -78,14 +69,15 @@ package com.pp.starling.ui
 			
 			_initialContentPoint.x = _initialContentPoint.y = 0 ;
 			
-			_transBack = new Quad( _viewPort.width, _viewPort.height ) ;
+			_transBack = new Quad( _viewport.width, _viewport.height ) ;
 			addChildAt( _transBack, 0 ) ;
 			_transBack.alpha = 0 ;
-			
 			addChild( _grid ) ;
 			
 			addEventListener( TouchEvent.TOUCH, onTouch) ;
 			addEventListener( Event.REMOVED_FROM_STAGE, onRemovedFromStage ) ;
+			
+			clipRect = _viewport ;
 		}
 		
 		public function getFirstChild():GridSymbol 
@@ -103,6 +95,7 @@ package com.pp.starling.ui
 		{
 			removeEventListener( TouchEvent.TOUCH, onTouch ) ;
 			removeEventListener( Event.REMOVED_FROM_STAGE, onRemovedFromStage ) ;
+			clear( true ) ;
 		}
 		
 		private function onTouch( e:TouchEvent ):void
@@ -149,14 +142,14 @@ package com.pp.starling.ui
 		
 		public function addSymbol( symbol:GridSymbol ):void
 		{
-			_grid.addSymbol( symbol ) ;
+			_grid.add( symbol ) ;
 			symbol.visible = isSymbolInViewPort( symbol ) ;
 		}
 		
-		public function clear():void
+		public function clear( dispose:Boolean = true ):void
 		{
 			_goToSymbol = null ;
-			_grid.clear() ;
+			_grid.clear( dispose ) ;
 			_grid.x = 0 ;
 			_grid.y = 0 ;
 		}
@@ -170,27 +163,27 @@ package com.pp.starling.ui
 			
 			if ( _grid.direction == HAlign.LEFT )
 			{
-				//		if ( _viewPort.width > holderWidth ) return ;
-				toX = symbol.x * (-1) + _viewPort.width * 0.5 - symbol.width * 0.5 ;
+				//		if ( _viewport.width > holderWidth ) return ;
+				toX = symbol.x * (-1) + _viewport.width * 0.5 - symbol.width * 0.5 ;
 				if ( toX > 0 ) toX = 0 ;
-				if ( toX < _viewPort.width - _grid.width ) toX = _viewPort.width - _grid.width ;
+				if ( toX < _viewport.width - _grid.width ) toX = _viewport.width - _grid.width ;
 				//	if ( _holder.x > 0 ) toX = 0 ; 
-				//	if ( _holder.x < holderWidth * (-1) + _viewPort.width ) toX = holderWidth * (-1) + _viewPort.width ;
+				//	if ( _holder.x < holderWidth * (-1) + _viewport.width ) toX = holderWidth * (-1) + _viewport.width ;
 			}
 			else
 			{
-				//	if ( _viewPort.height > holderHeight ) return ;
-				toY = symbol.y * (-1) + _viewPort.height * 0.5 - symbol.height * 0.5  ;
+				//	if ( _viewport.height > holderHeight ) return ;
+				toY = symbol.y * (-1) + _viewport.height * 0.5 - symbol.height * 0.5  ;
 				if ( toY > 0 ) toY = 0 ;
 				//	if ( _holder.y > 0 ) toY = 0 ;
-				//	if ( _holder.y < holderHeight * (-1) + _viewPort.height ) toY = holderHeight * (-1) + _viewPort.height ;
+				//	if ( _holder.y < holderHeight * (-1) + _viewport.height ) toY = holderHeight * (-1) + _viewport.height ;
 			}
 			
 			if ( toX != _grid.x || toY != _grid.y ) 
 			{
 				if ( withTween )
 				{
-					TweenLite.to( _grid, 0.5, {"x":toX, "y":toY, "onUpdate":hideOutSymbols } ) ;// * (-1) + _viewPort.width } ) ;
+					TweenLite.to( _grid, 0.5, {"x":toX, "y":toY, "onUpdate":hideOutSymbols } ) ;// * (-1) + _viewport.width } ) ;
 				}
 				else
 				{
@@ -223,16 +216,16 @@ package com.pp.starling.ui
 			{
 				var toX:int = _grid.x + v_0 + 0.5 * a * t * t ; 
 				needTween = false ;
-				if ( contentWidth > _viewPort.width )
+				if ( contentWidth > _viewport.width )
 				{
 					if ( toX > 0 ) 
 					{
 						toX = 0 ;
 						needTween = true ;
 					}
-					if ( toX < contentWidth * (-1) + _viewPort.width ) 
+					if ( toX < contentWidth * (-1) + _viewport.width ) 
 					{
-						toX = contentWidth * (-1) + _viewPort.width ;
+						toX = contentWidth * (-1) + _viewport.width ;
 						needTween = true ;
 					}
 				}
@@ -246,17 +239,17 @@ package com.pp.starling.ui
 			else
 			{
 				var toY:int = _grid.y + v_0 + 0.5 * a * t * t ;
-				if ( contentHeight > _viewPort.height )
+				if ( contentHeight > _viewport.height )
 				{
 					if ( toY > 0 ) 
 					{
 						toY = 0 ;
 						needTween = true ;
 					}
-					if ( toY < contentHeight * (-1) + _viewPort.height ) 
+					if ( toY < contentHeight * (-1) + _viewport.height ) 
 					{
 						
-						toY = contentHeight * (-1) + _viewPort.height ;
+						toY = contentHeight * (-1) + _viewport.height ;
 						needTween = true ;
 					}
 				}
@@ -276,25 +269,25 @@ package com.pp.starling.ui
 			if ( _grid.direction == HAlign.LEFT )
 			{
 				_grid.x = _initialContentPoint.x + ( _localTouchPoint.x - _localTouchBeganPoint.x ) ;
-				if ( _grid.x > _viewPort.width * ratio ) 
+				if ( _grid.x > _viewport.width * ratio ) 
 				{
-					_grid.x = _viewPort.width * ratio ;
+					_grid.x = _viewport.width * ratio ;
 				}
-				else if ( _grid.x < contentWidth * (-1) + _viewPort.width - ratio * _viewPort.width ) 
+				else if ( _grid.x < contentWidth * (-1) + _viewport.width - ratio * _viewport.width ) 
 				{
-					_grid.x = contentWidth * (-1) + _viewPort.width - ratio * _viewPort.width ;
+					_grid.x = contentWidth * (-1) + _viewport.width - ratio * _viewport.width ;
 				}
 			}
 			else
 			{
 				_grid.y = _initialContentPoint.y + ( _localTouchPoint.y - _localTouchBeganPoint.y ) ;
-				if ( _grid.y > _viewPort.height * ratio ) 
+				if ( _grid.y > _viewport.height * ratio ) 
 				{
-					_grid.y = _viewPort.height * ratio ;
+					_grid.y = _viewport.height * ratio ;
 				}
-				else if ( _grid.y < contentHeight * (-1) + _viewPort.height - ratio * _viewPort.height ) 
+				else if ( _grid.y < contentHeight * (-1) + _viewport.height - ratio * _viewport.height ) 
 				{
-					_grid.y = contentHeight * (-1) + _viewPort.height - ratio * _viewPort.height ;
+					_grid.y = contentHeight * (-1) + _viewport.height - ratio * _viewport.height ;
 				}
 			}
 			hideOutSymbols() ;
@@ -338,7 +331,7 @@ package com.pp.starling.ui
 		public function isSymbolInViewPort( dispObj:DisplayObject ):Boolean
 		{
 			var rect:Rectangle = dispObj.getBounds( this ) ;
-			return _viewPort.intersects( rect ) ;
+			return _viewport.intersects( rect ) ;
 		}
 	
 		public function findSymbol( id:int ):DisplayObject
