@@ -106,7 +106,7 @@ package com.pp.parse
 		public function batchLogs( compFunc:Function, logs:Array ):void
 		{
 			var requests:Array = [] ;
-			while ( logs.length > 0 ) requests.push( logToBatchObj( logs.shift() ) ) ;
+			while ( logs.length > 0 ) requests.push( logToBatchObj( logs.shift() )) ;
 		
 			var onComp:Function = function( results:Array  ):void
 			{
@@ -186,6 +186,7 @@ package com.pp.parse
 			}
 		//	if ( body.hasOwnProperty("pID") ) body.player = { "__type":"Pointer","className":"Player", "objectId":body.pID }  ;
 		//	delete body.id ;
+			trace("method, path", method, path ) ;
 			return ParseBatchObject.make( log, method, path ) ;
 		}
 		

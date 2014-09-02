@@ -11,7 +11,7 @@ package com.pp.starling.helper
 	
 	import starling.textures.Texture;
 
-	public class GraphicHelper
+	public class StarlingGraphicHelper
 	{
 		public static function makeGradientRectTexture( w:int, h:int):Texture
 		{
@@ -47,7 +47,7 @@ package com.pp.starling.helper
 			shape.graphics.drawRoundRect( nx, ny, nw, nh, rounded, rounded ) ;
 			shape.graphics.endFill() ;
 			var bmd:BitmapData = new BitmapData( w, h, true, 0x000000 ) ;
-			bmd.draw( shape ) ; //, mat ) ;
+			bmd.draw( shape ) ;
 			var tex:Texture =  Texture.fromBitmapData( bmd, false ) ;
 			bmd.dispose() ;
 			return tex ;

@@ -1,11 +1,7 @@
 package com.pp.starling.helper
 {
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	
 	import starling.core.Starling;
 	import starling.display.Button;
-	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
@@ -13,13 +9,13 @@ package com.pp.starling.helper
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 
-	public class EventManager
+	public class StarlingEventHelper
 	{
-		private static var _current:EventManager = null ;
+		private static var _current:StarlingEventHelper = null ;
 		
-		public static function get current():EventManager					
+		public static function get current():StarlingEventHelper					
 		{	
-			if ( _current == null ) _current = new EventManager ;
+			if ( _current == null ) _current = new StarlingEventHelper ;
 			return _current;	
 		}
 
@@ -31,7 +27,7 @@ package com.pp.starling.helper
 
 		private var _touch:Touch ;
 		
-		public function EventManager()
+		public function StarlingEventHelper()
 		{
 			init() ;
 		}
@@ -41,12 +37,12 @@ package com.pp.starling.helper
 			_targets = [] ;
 		}
 		
-		public function add( eventDispatcher:EventDispatcher ):void
+		public function addTarget( eventDispatcher:EventDispatcher ):void
 		{
 			if ( _targets.indexOf( eventDispatcher ) < 0  ) _targets.push( eventDispatcher ) ;
 		}
 		
-		public function remove( eventDispatcher:EventDispatcher ):void
+		public function removeTarget( eventDispatcher:EventDispatcher ):void
 		{
 			var idx:int = _targets.indexOf( eventDispatcher ) ;
 			if ( idx >= 0  ) _targets.splice( idx, 1 ) ;
@@ -57,7 +53,17 @@ package com.pp.starling.helper
 			_targets.length = 0 ;
 		}
 	
-		public function addButtonEvent( dispObj:DisplayObject, triggeredFunc:Function, touchBeganFunc:Function = null, touchEndedFunc:Function = null, touchMovedFunc:Function = null ):void
+		public function addButtonEvents( btns:Array, triggeredFunc:Function, touchBeganFunc:Function = null, touchEndedFunc:Function = null ):void
+		{
+			var i:int ;
+			var len:int = btns.length ;
+			for ( i = 0; i < len; i++) 	addButtonEvent( btns[ i ] as Button, triggeredFunc, touchBeganFunc, touchEndedFunc )	
+		}
+		
+		public function addButtonEvent( btn:Button,  
+										triggeredFunc:Function, 
+										touchBeganFunc:Function = null, 
+										touchEndedFunc:Function = null ):void
 		{
 			var onTriggered:Function = function( e:Event ):void
 			{
@@ -74,14 +80,22 @@ package com.pp.starling.helper
 				{
 					if ( isEventAva( e.currentTarget ) )
 					{
-						if ( _touch.phase == TouchPhase.BEGAN ) if ( touchBeganFunc ) touchBeganFunc( e ) ;
-						if ( _touch.phase == TouchPhase.ENDED ) if ( touchEndedFunc ) touchEndedFunc( e ) ;
-						if ( _touch.phase == TouchPhase.MOVED ) if ( touchMovedFunc ) touchMovedFunc( e ) ;
+						if ( _touch.phase == TouchPhase.BEGAN ) 
+						{
+							e.stopImmediatePropagation() ;
+							if ( touchBeganFunc ) touchBeganFunc( e ) ;
+							
+						}
+						else if ( _touch.phase == TouchPhase.ENDED ) 
+						{
+							e.stopImmediatePropagation() ;
+							if ( touchEndedFunc ) touchEndedFunc( e ) ;
+						}
 					}
 				}
 			}
-			if ( touchBeganFunc || touchEndedFunc || touchMovedFunc  ) dispObj.addEventListener( TouchEvent.TOUCH, onTouch ) ;
-			if ( dispObj is Button ) dispObj.addEventListener( Event.TRIGGERED, onTriggered ) ;
+			btn.addEventListener( Event.TRIGGERED, onTriggered ) ;
+			btn.addEventListener( TouchEvent.TOUCH, onTouch ) ;
 		}
 		
 		public function isEventAva( eventDispatcher:EventDispatcher ):Boolean

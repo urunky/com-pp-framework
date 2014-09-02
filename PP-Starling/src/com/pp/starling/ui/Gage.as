@@ -11,11 +11,11 @@ package com.pp.starling.ui
 	
 	public class Gage extends DisplayObjectContainer
 	{
-		private var _w:int ;
-		public function get w():int						{	return _w;	}
+		private var _pw:int ;
+		public function get pw():int						{	return _pw;	}
 
-		private var _h:int ;
-		public function get h():int						{	return _h;	}
+		private var _ph:int ;
+		public function get ph():int						{	return _ph;	}
 
 		public var showingValue:Number ;
 		
@@ -26,11 +26,11 @@ package com.pp.starling.ui
 		public function get tweenDuration():Number						{	return _tweenDuration;	}
 		public function set tweenDuration(value:Number):void						{	_tweenDuration = value;	}
 
-		public function Gage( w:int, h:int, tweenDuration:Number = 0.2 )
+		public function Gage( pw:int, ph:int, tweenDuration:Number = 0.2 )
 		{
 			super();
-			_w = w ;
-			_h = h ;
+			_pw = pw ;
+			_ph = ph ;
 			_tweenDuration = tweenDuration ;
 			_currentValue = 0 ;
 			showingValue = 0 ;
@@ -46,7 +46,6 @@ package com.pp.starling.ui
 		{
 			if ( useTween ) 
 			{
-				TweenLite.killTweensOf( this ) ;
 				TweenLite.to( this, _tweenDuration, { "showingValue":_currentValue, "onUpdate":update, "ease":Linear.easeNone } ) ;
 			}
 			else

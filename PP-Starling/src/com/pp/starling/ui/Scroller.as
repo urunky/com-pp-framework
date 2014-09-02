@@ -54,10 +54,12 @@ package com.pp.starling.ui
 		
 		public function get symbolNum():int					{	return _grid.numChildren ;	}
 		
-		public function Scroller( viewport:Rectangle, direction:String, symbolWidth:int, symbolHeight:int, symbolNumInDirection:int, hGap:int = 0 , vGap:int = 0, padding:Rectangle = null )
+		public function get symbolWidth():int				{	return _grid.symbolWidth ;	}
+		public function get symbolHeight():int				{	return _grid.symbolHeight ;	}
+		
+		public function Scroller( viewport:Rectangle, direction:String, symbolWidth:int, symbolHeight:int, symbolNumInDirection:int, hGap:int = 0 , vGap:int = 0, padding:Padding = null )
 		{
 			_viewport = viewport ;
-			trace("_viewport", _viewport) ;
 			_grid = new Grid( direction, symbolWidth, symbolHeight, symbolNumInDirection, hGap, vGap, padding )  ;
 			
 			_globalMovement = new Point ;

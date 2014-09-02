@@ -74,6 +74,12 @@ package com.pp.parse
 			_onFailFunc( this ) ;
 		}
 		
+		private function replacer( key:String, value:Object ):Object
+		{
+			if ( key == "log" ) return undefined ;
+			return value ;
+		}
+		
 		public function call( compFunc:Function, url:String, method:String, params:Object = null, where:Object = null ):void
 		{
 			_timer.start() ;
@@ -85,7 +91,7 @@ package com.pp.parse
 			if ( where  ) 
 			{
 				if ( params == null )  params = {}; 
-				params.where = JSON.stringify( where ); 
+				params.where = JSON.stringify( where, replacer ); 
 			}
 			if ( params ) 
 			{ 
@@ -97,7 +103,7 @@ package com.pp.parse
 				} 
 				else 
 				{ 
-					_req.data = JSON.stringify( params ); 
+					_req.data = JSON.stringify( params, replacer ); 
 				}
 			}
 			_loader.load( _req );

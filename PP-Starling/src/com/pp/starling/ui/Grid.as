@@ -1,7 +1,5 @@
 package com.pp.starling.ui
 {
-	import flash.geom.Rectangle;
-	
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
@@ -35,9 +33,9 @@ package com.pp.starling.ui
 		private var _symbolHeight:int ;
 		public function get symbolHeight():int						{	return _symbolHeight;	}
 
-		private var _padding:Rectangle ;
+		private var _padding:Padding ;
 		
-		public function Grid( direction:String,  symbolWidth:int, symbolHeight:int, symbolNumInDirection:int, hGap:int = 0, vGap:int = 0, padding:Rectangle = null  )
+		public function Grid( direction:String, symbolWidth:int, symbolHeight:int, symbolNumInDirection:int, hGap:int = 0, vGap:int = 0, padding:Padding = null  )
 		{
 			super() ;
 			_direction = direction ;
@@ -47,7 +45,7 @@ package com.pp.starling.ui
 			_hGap = hGap ;
 			_vGap = vGap ;
 			
-			_padding = new Rectangle ;
+			_padding = new Padding ;
 			if ( padding ) _padding = padding ;
 			_pw = 0 ;
 			_ph = 0 ;
@@ -85,7 +83,7 @@ package com.pp.starling.ui
 		{
 			var symbol:GridSymbol = null ;
 			
-			var maxSymbolNumInLine:int = numChildren > _symbolNumInDirection ? _symbolNumInDirection : numChildren ;
+			var maxSymbolNumInLine:int = int( numChildren / _symbolNumInDirection ) + 1 ;//> _symbolNumInDirection ? _symbolNumInDirection : numChildren ;
 			_pw = _padding.left + _symbolWidth + _padding.right ;
 			if ( maxSymbolNumInLine > 0 ) _pw += ( maxSymbolNumInLine - 1 ) * ( _symbolWidth + _hGap ) ;
 			

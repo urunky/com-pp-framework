@@ -1,7 +1,5 @@
 package com.pp.starling.helper
 {
-	import com.greensock.loading.LoaderMax;
-	
 	import flash.system.Capabilities;
 	
 	import dragonBones.factorys.StarlingFactory;
@@ -17,8 +15,6 @@ package com.pp.starling.helper
 		
 		private var _scaleFactor:Number 
 
-		private var _loaderMax:LoaderMax ;
-		
 		private var _assetManager:AssetManager ;
 		
 		private var _verbose:Boolean ;

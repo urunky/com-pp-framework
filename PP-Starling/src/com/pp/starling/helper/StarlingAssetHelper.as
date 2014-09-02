@@ -1,7 +1,5 @@
 package com.pp.starling.helper
 {
-	import flash.system.Capabilities;
-	
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
@@ -21,14 +19,24 @@ package com.pp.starling.helper
 			_names = [] ;
 		}
 		
-		
-		public function load( progressFunc:Function, fileNames:Array  ):void
+		public function enqueue( fileNames:Array ):void
 		{
 			_assetManager.enqueue( fileNames ) ;
-			/*var onLoadComp:Function = function( ratio:Number ):void
+		}
+		
+		public function load( progressFunc:Function, compFunc:Function  ):void
+		{
+			var onProgress:Function = function( ratio:Number ):void
 			{
-				if ( ratio == 1 ) compFunc() ;
-			}*/
+				if ( ratio >= 1 ) 
+				{
+					if ( compFunc ) compFunc() ;
+				}
+				else
+				{
+					if ( progressFunc ) progressFunc( ratio ) ;
+				}
+			}
 			_assetManager.loadQueue( progressFunc ) ;
 		}
 		
@@ -58,10 +66,6 @@ package com.pp.starling.helper
 		{
 			return assetManager.getTextures( name, result ) ;
 		}
-		
-		private function isWindow():Boolean				{	return Capabilities.os.indexOf("Windows") >= 0 ;	}
-		private function isIOS():Boolean				{	return Capabilities.os.indexOf("OS") >= 0 ;	}
-		private function isAndroid():Boolean			{	return Capabilities.os.indexOf("Linux") >= 0 ;	}
 		
 		public function dispose():void
 		{
