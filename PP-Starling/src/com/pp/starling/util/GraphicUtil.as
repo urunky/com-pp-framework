@@ -2,7 +2,7 @@
 // May 31, 2014
 // =================================================================================================
 
-package com.pp.starling.helper
+package com.pp.starling.util
 {
 	import flash.display.BitmapData;
 	import flash.display.GradientType;
@@ -11,7 +11,7 @@ package com.pp.starling.helper
 	
 	import starling.textures.Texture;
 
-	public class StarlingGraphicHelper
+	public class GraphicUtil
 	{
 		public static function makeGradientRectTexture( w:int, h:int):Texture
 		{

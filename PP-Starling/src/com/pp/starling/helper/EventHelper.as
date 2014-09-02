@@ -9,13 +9,13 @@ package com.pp.starling.helper
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 
-	public class StarlingEventHelper
+	public class EventHelper
 	{
-		private static var _current:StarlingEventHelper = null ;
+		private static var _current:EventHelper = null ;
 		
-		public static function get current():StarlingEventHelper					
+		public static function get current():EventHelper					
 		{	
-			if ( _current == null ) _current = new StarlingEventHelper ;
+			if ( _current == null ) _current = new EventHelper ;
 			return _current;	
 		}
 
@@ -27,7 +27,7 @@ package com.pp.starling.helper
 
 		private var _touch:Touch ;
 		
-		public function StarlingEventHelper()
+		public function EventHelper()
 		{
 			init() ;
 		}

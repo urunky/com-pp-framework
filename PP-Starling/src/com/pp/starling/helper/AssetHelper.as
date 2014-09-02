@@ -3,12 +3,12 @@ package com.pp.starling.helper
 	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 
-	public class StarlingAssetHelper
+	public class AssetHelper
 	{
 		private var _assetManager:AssetManager = null ;
 		public function get assetManager():AssetManager					{	return _assetManager;	}
 		
-		public function StarlingAssetHelper( verbose:Boolean = false )
+		public function AssetHelper( verbose:Boolean = false )
 		{
 			_assetManager = new AssetManager ;
 			_assetManager.verbose = verbose ;
