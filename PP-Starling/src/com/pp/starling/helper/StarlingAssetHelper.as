@@ -5,25 +5,19 @@ package com.pp.starling.helper
 
 	public class StarlingAssetHelper
 	{
-		private var _scaleFactor:Number ;
-		
 		private var _assetManager:AssetManager = null ;
 		public function get assetManager():AssetManager					{	return _assetManager;	}
-		
-		private var _names:Array ;
 		
 		public function StarlingAssetHelper( verbose:Boolean = false )
 		{
 			_assetManager = new AssetManager ;
 			_assetManager.verbose = verbose ;
-			_names = [] ;
 		}
 		
 		public function enqueue( fileNames:Array ):void
 		{
 			_assetManager.enqueue( fileNames ) ;
 		}
-		
 		public function load( progressFunc:Function, compFunc:Function  ):void
 		{
 			var onProgress:Function = function( ratio:Number ):void
@@ -44,16 +38,22 @@ package com.pp.starling.helper
 		{ 
 			var tex:Texture = assetManager.getTexture( name ) ;
 			if ( tex ) return tex ;
+			
 			tex = assetManager.getTexture( name + "0000" ) ;
 			if ( tex ) return tex ;
+			
 			tex = assetManager.getTexture( name + " instance 1" ) ;
 			if ( tex ) return tex ;
+			
 			tex = assetManager.getTexture( name + " instance 10000" ) ;
 			if ( tex ) return tex ;
+			
 			tex = assetManager.getTexture( name + ".png instance 1" ) ;
 			if ( tex ) return tex ;
+			
 			tex = assetManager.getTexture( name + ".png instance 10000" ) ;
 			if ( tex ) return tex ;
+			
 			var textures:Vector.<Texture> = getTextures( name ) ;
 			if ( textures ) 
 			{
@@ -70,7 +70,6 @@ package com.pp.starling.helper
 		public function dispose():void
 		{
 			assetManager.purge() ;
-			assetManager.dispose() ;
 		}
 	}
 }
