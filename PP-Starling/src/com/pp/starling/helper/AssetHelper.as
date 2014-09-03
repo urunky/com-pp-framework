@@ -8,30 +8,35 @@ package com.pp.starling.helper
 		private var _assetManager:AssetManager = null ;
 		public function get assetManager():AssetManager					{	return _assetManager;	}
 		
+		private var _loadComplete:Boolean 
+		public function get loadComplete():Boolean						{	return _loadComplete;	}
+
 		public function AssetHelper( verbose:Boolean = false )
 		{
 			_assetManager = new AssetManager ;
 			_assetManager.verbose = verbose ;
+			_assetManager.keepAtlasXmls = true ;
+			_loadComplete = false ;
 		}
 		
 		public function enqueue( fileNames:Array ):void
 		{
+			_loadComplete = false ;
 			_assetManager.enqueue( fileNames ) ;
 		}
+		
 		public function load( progressFunc:Function, compFunc:Function  ):void
 		{
 			var onProgress:Function = function( ratio:Number ):void
 			{
+				if ( progressFunc ) progressFunc( ratio ) ;
 				if ( ratio >= 1 ) 
 				{
+					_loadComplete = true ;
 					if ( compFunc ) compFunc() ;
 				}
-				else
-				{
-					if ( progressFunc ) progressFunc( ratio ) ;
-				}
 			}
-			_assetManager.loadQueue( progressFunc ) ;
+			_assetManager.loadQueue( onProgress ) ;
 		}
 		
 		public function getTexture( name:String ):Texture

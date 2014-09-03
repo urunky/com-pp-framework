@@ -17,31 +17,40 @@ package com.pp.starling.helper
 
 		private var _assetManager:AssetManager ;
 		
-		private var _verbose:Boolean ;
+		private var _loadComplete:Boolean 
+		public function get loadComplete():Boolean						{	return _loadComplete;	}
 		
-		public function DragonBonesHelper( verbose:Boolean = false )
+		public function DragonBonesHelper()
 		{
-			_verbose = verbose ;
 			_factory = new StarlingFactory ;
 			_factory.generateMipMaps = false ;
 			_factory.optimizeForRenderToTexture = true ;
-		}
-		
-		public function load( progressFunc:Function, fileNames:Array ):void
-		{
+			
 			_assetManager = new AssetManager ;
 			_assetManager.keepAtlasXmls = true ;
-			_assetManager.verbose = _verbose ;
+			
+			_loadComplete = false ;
+		}
+		
+		public function enqueue( fileNames:Array ):void
+		{
+			_loadComplete = false ;
 			_assetManager.enqueue( fileNames ) ;
+		}
+		
+		public function load( progressFunc:Function, compFunc:Function ):void
+		{
 			var onProgress:Function = function( ratio:Number ):void
 			{
+				if ( progressFunc ) progressFunc( ratio ) ;
 				if ( ratio >= 1 )
 				{
+					_loadComplete = true ;
 					factory.addSkeletonData( XMLDataParser.parseSkeletonData( _assetManager.getXml("skeleton") ) ) ;
 					var sta:StarlingTextureAtlas = new StarlingTextureAtlas( _assetManager.getTexture("texture"), _assetManager.getXml("texture") )  ;
 					factory.addTextureAtlas( sta ) ;
+					if ( compFunc ) compFunc() ;
 				}
-				progressFunc( ratio ) ;
 			}
 			_assetManager.loadQueue( onProgress ) ;
 		}
