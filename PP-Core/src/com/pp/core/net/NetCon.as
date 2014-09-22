@@ -42,6 +42,7 @@ package com.pp.core.net
 		public static function call( gatewayURL:String, command:String, compFunc:Function, ... args ):void
 		{
 			var con:NetCon = NetCon.pick() ; // new NetCon ; //
+			trace("NetCon.call", con, gatewayURL, command ) ;
 			con.gatewayURL = gatewayURL ;
 			con.command = command ;
 			con.compFunc = compFunc ;

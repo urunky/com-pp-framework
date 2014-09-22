@@ -83,7 +83,7 @@ package com.pp.parse
 		public function callCloudFunc( compFunc:Function, functionName:String, params:Object = null ):void
 		{
 			var url:String = PARSE_CLOUD_CODE + functionName ;
-			executeCall( compFunc, url, URLRequestMethod.POST, params, {} );
+			executeCall( compFunc, url, URLRequestMethod.POST, params, null );
 		}
 		
 		public function update( compFunc:Function, className:String, id:String, params:Object = null ):void

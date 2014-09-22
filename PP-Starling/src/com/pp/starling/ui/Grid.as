@@ -1,17 +1,13 @@
 package com.pp.starling.ui
 {
 	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
-	import starling.events.Event;
 	import starling.utils.HAlign;
+	import starling.utils.VAlign;
 	
-	public class Grid extends DisplayObjectContainer
+	public class Grid extends Container
 	{
-		private function get lineCnt():int							
-		{
-			if ( numChildren == 0 ) return 1 ;
-			return int ( ( numChildren - 1 ) / _symbolNumInDirection ) + 1 ;		
-		}
+		public static const H_ALIGN:String = HAlign.LEFT ;
+		public static const V_ALIGN:String = VAlign.BOTTOM ;
 		
 		private var _pw:int ;
 		public function get pw():int				{	return _pw ;	}
@@ -19,13 +15,16 @@ package com.pp.starling.ui
 		private var _ph:int ;
 		public function get ph():int				{	return _ph ;	}
 		
-		private var _hGap:int ;
-		private var _vGap:int ;
-		
+		private var _colGap:int 
+		public function get colGap():int						{	return _colGap;	}
+
+		private var _rowGap:int 
+		public function get rowGap():int						{	return _rowGap;	}
+
 		private var _direction:String 
 		public function get direction():String						{	return _direction;	}
 
-		private var _symbolNumInDirection:int ;
+		private var _numDirection:int ;
 		
 		private var _symbolWidth:int ;
 		public function get symbolWidth():int						{	return _symbolWidth;	}
@@ -34,66 +33,86 @@ package com.pp.starling.ui
 		public function get symbolHeight():int						{	return _symbolHeight;	}
 
 		private var _padding:Padding ;
+		public function get padding():Padding						{	return _padding;	}
+
+		private var _symbolByKey:Object ;
 		
-		public function Grid( direction:String, symbolWidth:int, symbolHeight:int, symbolNumInDirection:int, hGap:int = 0, vGap:int = 0, padding:Padding = null  )
+		public function Grid( direction:String, symbolWidth:int, symbolHeight:int, numDirection:int, colGap:int = 0, rowGap:int = 0, 
+							  newPadding:Padding = null  )
 		{
 			super() ;
 			_direction = direction ;
 			_symbolWidth = symbolWidth ;
 			_symbolHeight = symbolHeight ;
-			_symbolNumInDirection = symbolNumInDirection ;
-			_hGap = hGap ;
-			_vGap = vGap ;
+			_numDirection = numDirection ;
 			
-			_padding = new Padding ;
-			if ( padding ) _padding = padding ;
-			_pw = 0 ;
-			_ph = 0 ;
-			addEventListener( Event.REMOVED_FROM_STAGE, onRemovedFromStage ) ;
+			_colGap = colGap ;
+			_rowGap = rowGap ;
+			
+			_symbolByKey = {} ;
+			
+			newPadding ? _padding = newPadding : _padding = new Padding 
+			
+			_pw = _padding.left + _symbolWidth + _padding.right ; 
+			_ph = _padding.top + _symbolHeight + _padding.bottom; 
 		}
 		
-		private function onRemovedFromStage( e:Event ):void
+		override protected function removedFromStage():void
 		{
-			removeEventListener( Event.REMOVED_FROM_STAGE, onRemovedFromStage ) ;
 			clear() ;
+			super.removedFromStage() ;
 		}
+	
 		
 		public function add( symbol:GridSymbol ):void
 		{
-			var idx:int = numChildren ;
-			var px:int ;
-			var py:int ;
+			_symbolByKey[ symbol.id ] = symbol ;
+			
+			var row:int ;
+			var col:int ;
+		
 			if ( _direction == HAlign.LEFT )
 			{
-				px = _padding.left + int( idx / _symbolNumInDirection ) * ( _symbolWidth + _hGap )  ;
-				py = _padding.top + ( idx % _symbolNumInDirection ) * ( _symbolHeight + _vGap )  ;
+				row = numChildren % _numDirection ;
+				col = int( numChildren / _numDirection ) ;
 			}
 			else
 			{
-				px = _padding.left + ( idx % _symbolNumInDirection ) * ( _symbolWidth + _hGap )  ;
-				py = _padding.top + int( idx / _symbolNumInDirection ) * ( _symbolHeight + _vGap ) ;
+				row = int( numChildren / _numDirection ) ;
+				col = ( numChildren % _numDirection ) ;
 			}
-			symbol.x = px ;
-			symbol.y = py ;
+			symbol.x = _padding.left + col  * ( _symbolWidth + _colGap ) ;
+			symbol.y = _padding.top + row * ( _symbolHeight + _rowGap )  ;
 			addChild( symbol ) ;
-			updateProperties() ;
+			
+			var right:int = symbol.x + _symbolWidth + _padding.right ;
+			if ( _pw < right )  _pw = right ;
+			
+			var bottom:int = symbol.y + _symbolHeight + _padding.bottom ;
+			if ( _ph < bottom )  _ph = bottom ;
+			
+		//	updateProperties() ;
 		}
-		
+		/*
 		private function updateProperties():void
 		{
-			var symbol:GridSymbol = null ;
-			
-			var maxSymbolNumInLine:int = int( numChildren / _symbolNumInDirection ) + 1 ;//> _symbolNumInDirection ? _symbolNumInDirection : numChildren ;
+			var maxSymbolNumInLine:int = int( numChildren / _numDirection ) + 1 ;//> _symbolNumInDirection ? _symbolNumInDirection : numChildren ;
 			_pw = _padding.left + _symbolWidth + _padding.right ;
-			if ( maxSymbolNumInLine > 0 ) _pw += ( maxSymbolNumInLine - 1 ) * ( _symbolWidth + _hGap ) ;
+			if ( maxSymbolNumInLine > 0 ) _pw += ( maxSymbolNumInLine - 1 ) * ( _symbolWidth + _colGap ) ;
+			
+			var lineCnt:int ;
+			if ( numChildren == 0 ) lineCnt = 1 ;
+			lineCnt = int ( ( numChildren - 1 ) / _numDirection ) + 1 ;		
 			
 			_ph = _padding.top + _symbolHeight + _padding.bottom  ;
-			if ( lineCnt > 0 )	_ph += ( lineCnt - 1 ) * ( _symbolHeight + _vGap ) ;
+			if ( lineCnt > 0 )	_ph += ( lineCnt - 1 ) * ( _symbolHeight + _rowGap ) ;
 		}
+		*/
 		
-		public function findSymbolByID( id:int ):GridSymbol
+		public function findSymbolByKey( key:String ):GridSymbol
 		{
-			var i:int ;
+			return _symbolByKey[ key ];
+			/*var i:int ;
 			var symbol:GridSymbol ;
 			var len:int = numChildren ;
 			for ( i = 0; i < len; i++) 
@@ -101,16 +120,28 @@ package com.pp.starling.ui
 				symbol = getChildAt( i ) as GridSymbol ;
 				if ( symbol.id == id ) return symbol ;
 			}
+			return null ;*/
+		}
+		
+		public function getFirstChild():GridSymbol 
+		{
+			if ( numChildren > 0 ) return getChildAt(0) as GridSymbol ;
 			return null ;
 		}
 		
-		public function findSymbolAt( idx:int):DisplayObject
+		public function removeFirstChild( dispose:Boolean = false ):void
 		{
-			return getChildAt( idx ) as DisplayObject ;
+			removeChildAt( 0, dispose );
+		}
+		
+		public function findSymbolAt( idx:int):GridSymbol
+		{
+			return getChildAt( idx ) as GridSymbol ;
 		}
 									  
 		public function clear( dispose:Boolean = true ):void
 		{
+			for ( var k:String in _symbolByKey ) delete _symbolByKey[ k ] ;
 			removeChildren(0, -1, dispose ) ;
 		}
 	}

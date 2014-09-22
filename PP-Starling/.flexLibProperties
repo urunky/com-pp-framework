@@ -2,7 +2,7 @@
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="com.pp.starling.helper.BinaryLoader"/>
-    <classEntry path="com.pp.starling.ui.Holder"/>
+    <classEntry path="com.pp.starling.manager.TouchManager"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

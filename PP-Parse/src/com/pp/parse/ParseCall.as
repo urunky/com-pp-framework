@@ -71,7 +71,7 @@ package com.pp.parse
 		private function onTimerComp( e:TimerEvent ):void
 		{
 			_timer.reset() ;
-			_onFailFunc( this ) ;
+		//	_onFailFunc( this ) ;
 		}
 		
 		private function replacer( key:String, value:Object ):Object

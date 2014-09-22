@@ -28,7 +28,7 @@ package com.pp.starling.util
 			return tex  ;
 		}
 		
-		public static function makeRoundRectTexture( w:int, h:int, col:uint, alpha:Number, rounded:int = 20, lineCol:uint = 0x000000, lineThickness:int = 0 ):Texture
+		public static function makeRoundRectTexture( w:int, h:int, col:uint = 0xFF3300, alpha:Number = 1, rounded:int = 20, lineCol:uint = 0x000000, lineThickness:int = 0 ):Texture
 		{
 			var shape:Shape = new Shape ;
 			if ( lineThickness > 0 ) shape.graphics.lineStyle( lineThickness, lineCol ) ;

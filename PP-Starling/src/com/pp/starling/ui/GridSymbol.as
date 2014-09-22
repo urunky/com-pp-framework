@@ -21,6 +21,7 @@ package com.pp.starling.ui
 
 		private var _id:int ;
 		public function get id():int						{	return _id ;	}
+		public function get key():String					{	return String( _id ) ;		}
 		
 		override public function set x( value:Number ):void
 		{
