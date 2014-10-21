@@ -51,8 +51,6 @@ package com.pp.starling.ui
 			
 			_grid = new Grid( direction, symbolWidth, symbolHeight, numDirection, colGap, rowGap, padding )  ;
 			
-			
-			
 			_transBack = new Quad( _viewPort.width, _viewPort.height ) ;
 			_transBack.alpha = 0 ;
 			addChildAt( _transBack, 0 ) ;
@@ -151,7 +149,6 @@ package com.pp.starling.ui
 		
 		public function stop( dX:int, dY:int ):void
 		{
-			trace("dX", dX, dY ) ;
 			if ( _goToSymbol ) return ;
 			
 			var aFactor:Number = 0.25 ;
@@ -172,7 +169,6 @@ package com.pp.starling.ui
 			if (  _grid.direction == Grid.H_ALIGN )
 			{
 				var toX:int = _grid.x + v_0 + 0.5 * a * t * t ; 
-			//	toX = int( toX / _grid.symbolWidth + 0.5 ) * _grid.symbolWidth  ;
 				needTween = false ;
 				if ( gridWidth > _viewPort.width )
 				{
@@ -272,7 +268,8 @@ package com.pp.starling.ui
 			var dispObj:DisplayObject ;
 			for ( i = 0; i < len; i++) 
 			{
-				if ( _grid.getChildAt(i).hasOwnProperty("refresh") ) _grid.getChildAt(i)["refresh"]() ;
+				dispObj = _grid.getChildAt(i) ;
+				if ( "refresh" in dispObj ) dispObj["refresh"]() ;
 			}
 		}
 		
@@ -284,12 +281,12 @@ package com.pp.starling.ui
 			var bool:Boolean ;
 			for ( i = 0; i < len ; i++ ) 
 			{
-				view = _grid.getChildAt(i) as DisplayObject ;
+				view = _grid.getChildAt(i) ;
 				bool = isSymbolInViewPort( view ) ;
 				view.visible = bool ;
 				if ( bool )
 				{
-					if ( view.hasOwnProperty("load") ) view["load"]() ;
+					if ( "load" in  view ) view["load"]() ;
 				}
 			}
 		}

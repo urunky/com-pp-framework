@@ -141,7 +141,7 @@ package com.pp.starling.ui
 									  
 		public function clear( dispose:Boolean = true ):void
 		{
-			for ( var k:String in _symbolByKey ) delete _symbolByKey[ k ] ;
+			for ( var k:* in _symbolByKey ) delete _symbolByKey[ k ] ;
 			removeChildren(0, -1, dispose ) ;
 		}
 	}

@@ -98,7 +98,7 @@ package com.pp.parse
 				if ( method == URLRequestMethod.GET ) 
 				{
 					var vars:URLVariables = new URLVariables();
-					for (var p:String in params) vars[p] = params[p];
+					for (var p:* in params) vars[p] = params[p];
 					_req.data = vars;
 				} 
 				else 
@@ -125,7 +125,7 @@ package com.pp.parse
 			_timer.reset() ;
 			if ( Capabilities.os.indexOf("Window") >= 0 )  trace("e.target.data",  e.target.data ) ;
 			var obj:Object = JSON.parse( e.target.data ) ;
-			if ( obj.hasOwnProperty("error") )
+			if ( "error" in obj )
 			{
 				var code:int =  obj["code"] ;
 				if ( code == 155 )

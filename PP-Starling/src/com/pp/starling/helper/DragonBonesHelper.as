@@ -15,7 +15,10 @@ package com.pp.starling.helper
 		
 		private var _scaleFactor:Number 
 
-		private var _assetManager:AssetManager ;
+		private var _assetManager:AssetManager 
+		public function get assetManager():AssetManager						{	return _assetManager;	}
+
+;
 		
 		private var _loadComplete:Boolean 
 		public function get loadComplete():Boolean						{	return _loadComplete;	}

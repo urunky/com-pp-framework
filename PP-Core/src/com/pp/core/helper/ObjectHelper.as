@@ -6,7 +6,7 @@ package com.pp.core.helper
 	{
 		public static function traceObject( obj:Object ):void
 		{
-			for ( var key:String in obj ) trace("obj[", key, "] = ", obj[key] + "\n") ;
+			for ( var key:* in obj ) trace("obj[", key, "] = ", obj[key] + "\n") ;
 		}
 		
 		public static function getShortClassName( obj:Object ):String
@@ -17,9 +17,9 @@ package com.pp.core.helper
 		
 		public static function mergeObjects( originObj:Object, mergedObj:Object, ignoreOrigin:Boolean = true ):Object
 		{
-			for ( var key:String in mergedObj ) 	
+			for ( var key:* in mergedObj ) 	
 			{
-				if ( originObj.hasOwnProperty( key ) )
+				if ( "key" in originObj )
 				{
 					if ( ignoreOrigin ) continue ;
 				}

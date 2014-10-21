@@ -18,8 +18,9 @@ package com.pp.starling.manager
 			return _current;	
 		}
 		
-		private var _targets:Array ;
-		
+		private var _targets:Array 
+		public function get targets():Array						{	return _targets;	}
+
 		public function EventManager()
 		{
 			_targets = [] ;

@@ -13,8 +13,7 @@ package com.pp.core.helper
 		{
 			_createFunc = createFunc ;
 			_poolables = [] ;
-			var i:int ;
-			for ( i = 0 ; i < newSize ; i++ )	_poolables[ _poolables.length ] = _createFunc()  ;
+			for ( var i:int = 0 ; i < newSize ; i++ )	_poolables[ _poolables.length ] = _createFunc()  ;
 		}
 		
 		public function getOut():IPoolable

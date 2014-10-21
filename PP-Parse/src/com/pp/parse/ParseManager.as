@@ -120,7 +120,7 @@ package com.pp.parse
 					r = results[ i ] ;
 					if ( b.method == ParseBatchObject.POST )
 					{
-						if ( r.hasOwnProperty("success" ) )
+						if ( "success" in  r )
 						{
 							( b as ParseBatchObject ).log.id = r.success.objectId ;
 						}
@@ -184,9 +184,6 @@ package com.pp.parse
 				method = ParseBatchObject.PUT ; 
 				path = path + "/" + log.id ;
 			}
-		//	if ( body.hasOwnProperty("pID") ) body.player = { "__type":"Pointer","className":"Player", "objectId":body.pID }  ;
-		//	delete body.id ;
-			trace("method, path", method, path ) ;
 			return ParseBatchObject.make( log, method, path ) ;
 		}
 		
@@ -201,11 +198,11 @@ package com.pp.parse
 			{
 				loggable = loggables[ i ] ;
 				result = results[ i ] ;
-				if ( result.hasOwnProperty("success") )
+				if ( "success" in result )
 				{
-					if ( result.success.hasOwnProperty("objectId") )  loggable.id = result.success.objectId ;
+					if ( "objectId" in result.success )  loggable.id = result.success.objectId ;
 				}
-				else if ( result.hasOwnProperty("error") )
+				else if ( "error" in  result )
 				{
 					
 				}

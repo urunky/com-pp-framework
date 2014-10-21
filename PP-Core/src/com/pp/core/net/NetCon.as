@@ -120,7 +120,7 @@ package com.pp.core.net
 				NetCon.queue.push( nc ) ; 
 				if ( r )
 				{
-					if ( r.hasOwnProperty("ok") )
+					if ( "ok" in r )
 					{
 						if ( r.ok )
 						{

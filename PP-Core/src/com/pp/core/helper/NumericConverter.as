@@ -9,11 +9,10 @@ package com.pp.core.helper
 		public static function getDigitString( val:int, digit:int = 3):String
 		{
 			var valStr:String = String( val ) ;
-			var i:int ;
 			var len:int = valStr.length ;
 			var cnt:int ;
 			var str:String = "" ;
-			for ( i = len-1; i >= 0 ; i-- ) 
+			for ( var i:int = len-1; i >= 0 ; i-- ) 
 			{
 				str = valStr.charAt(i) + str ;
 				cnt++ ;

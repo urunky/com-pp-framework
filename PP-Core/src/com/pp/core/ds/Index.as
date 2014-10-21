@@ -41,14 +41,14 @@ package com.pp.core.ds
 		public function add( obj:Object ):void
 		{
 			if ( _all.indexOf( obj ) < 0 ) _all[ _all.length ] = obj ;
-			if ( obj.hasOwnProperty("id") ) _hashByID[ String( obj.id ) ] = obj ;
+			if ( "id" in obj ) _hashByID[ String( obj.id ) ] = obj ;
 		}
 		
 		public function remove( obj:Object ):void
 		{
 			var idx:int = _all.indexOf( obj ) ;
 			if ( idx >= 0 ) _all.splice( idx, 1 ) ;
-			if ( obj.hasOwnProperty("id") ) delete _hashByID[ String( obj.id ) ] ;
+			if ( "id" in obj ) delete _hashByID[ String( obj.id ) ] ;
 		}
 		
 		public function find( id:String ):Object

@@ -7,8 +7,7 @@ package com.pp.core.helper
 			if ( list is Array || list is Vector.<*> )
 			{
 				var len:int = list["length"] ;
-				var i:int ;
-				for ( i = 0; i < len; i++) func( list[ i ] ) ;
+				for ( var i:int = 0; i < len; i++) func( list[ i ] ) ;
 			}
 			else
 			{
